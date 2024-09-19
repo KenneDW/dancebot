@@ -163,3 +163,4 @@ cython_debug/
 *.cache
 *.cfg
 *.DS_Store
+*.csv
