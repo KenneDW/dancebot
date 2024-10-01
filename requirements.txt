@@ -1,0 +1,8 @@
+itemadapter==0.9.0
+matplotlib==3.9.2
+numpy==2.1.1
+pandas==2.2.3
+plotly==5.24.0
+ratelimit==2.2.1
+Scrapy==2.11.2
+spotipy==2.24.0

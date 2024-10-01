@@ -31,6 +31,9 @@ import plotly
 # Add option to randomly sample within each genre, as a way of ensuring an identical sample size
 # for each genre
 
+# Design these functions to be malleable, so we can import them into different python projects
+# that target different approaches to the data.
+
 def data_initiation(file):
     df = pd.read_csv(file)
 
@@ -78,4 +81,6 @@ def main():
     genre_avgdata = genre_aggregation(df_data)
     final_data = add_counts(counts, genre_avgdata)
     save_to_csv(final_data)
-main()
+
+if __name__ == '__main__':
+    main()

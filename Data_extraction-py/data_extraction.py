@@ -279,14 +279,15 @@ def additional_song_data(genres_info_file, tracks_index = 100):
     file = open('spotify_song_data.csv', 'a')
     
     writer = csv.DictWriter(file, fieldnames=df.columns.to_list() + 
-            ['Danceability', 'Energy', 'Speechiness', 'Acousticness', 
+            ['Danceability', 'Energy', 'Mode', 'Tempo', 'Loudness', 
+             'Duration MS', 'Speechiness', 'Acousticness', 
              'Instrumentalness', 'Liveness', 'Valence', 'Time Signature'])
     
 
     tracks_index = index_check('missing_song_indexes.txt')
     
     if tracks_index == None:
-        tracks_index = 100
+        tracks_index = 100 # This should be condensed later, too much redefining variables
         
     if tracks_index == 100:
         writer.writeheader()
@@ -298,9 +299,9 @@ def additional_song_data(genres_info_file, tracks_index = 100):
     for i in range(tracks_index, len(track_ids) + 100, 100):
         try:
             if i <= len(track_ids):
-
-                # Use list slicing to minimize necessary API calls while maximizing
+                # Use list slicing to minimize necessary API calls while maximizing 
                 # data retrieval
+                
                 total_features = []
                 total_features.extend(sp.audio_features(tracks=track_ids[i - 100 : i]))
                 time.sleep(0.5)
@@ -309,7 +310,11 @@ def additional_song_data(genres_info_file, tracks_index = 100):
                 
                 for song in total_features:
                     df.loc[index, 'Danceability'] = song['danceability']
-                    df.loc[index, 'Energy'] = song['loudness']
+                    df.loc[index, 'Energy'] = song['energy']
+                    df.loc[index, 'Mode'] = song['mode']
+                    df.loc[index, 'Tempo'] = song['tempo']
+                    df.loc[index, 'Loudness'] = song['loudness']
+                    df.loc[index, 'Duration MS'] = song['duration_ms']
                     df.loc[index, 'Speechiness'] = song['speechiness']
                     df.loc[index, 'Acousticness'] = song['acousticness']
                     df.loc[index, 'Instrumentalness'] = song['instrumentalness']
@@ -328,7 +333,11 @@ def additional_song_data(genres_info_file, tracks_index = 100):
                 
                 for song in total_features[i - (i % 100) : i]:
                     df.loc[index, 'Danceability'] = song['danceability']
-                    df.loc[index, 'Energy'] = song['loudness']
+                    df.loc[index, 'Energy'] = song['energy']
+                    df.loc[index, 'Mode'] = song['mode']
+                    df.loc[index, 'Tempo'] = song['tempo']
+                    df.loc[index, 'Loudness'] = song['loudness']
+                    df.loc[index, 'Duration MS'] = song['duration_ms']
                     df.loc[index, 'Speechiness'] = song['speechiness']
                     df.loc[index, 'Acousticness'] = song['acousticness']
                     df.loc[index, 'Instrumentalness'] = song['instrumentalness']
@@ -348,7 +357,17 @@ def additional_song_data(genres_info_file, tracks_index = 100):
                 with open("missing_song_indexes.txt", 'a') as file:
                     file.write(str(i) + '\n')
             raise err
+    
 
 
 
+#valid_genres = file_to_list('valid_genres.txt')
 
+#%%
+#initial_data(valid_genres, sample_size = 1000, results_per_call = 50)
+
+#%%
+#clean_initial_data('fulld_initial_spotify_data.csv')
+
+#%%
+additional_song_data("full_initial_spotify_data.csv")
